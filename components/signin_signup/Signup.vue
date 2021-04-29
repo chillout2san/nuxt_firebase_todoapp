@@ -1,5 +1,8 @@
 <template>
   <div>
+    <p class="has-text-weight-bold is-size-5">
+      メールアドレスとパスワードで新規登録
+    </p>
     <div class="field">
       <label class="label">ユーザー名</label>
       <div class="control">
@@ -38,17 +41,19 @@
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link" @click="signUp">送信</button>
+        <nuxt-link to="/relogin">
+          <button class="button is-primary" @click="signUp">送信</button>
+        </nuxt-link>
       </div>
       <div class="control">
-        <button class="button is-link is-light">キャンセル</button>
+        <button class="button is-primary is-light">キャンセル</button>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
@@ -56,12 +61,12 @@ export default Vue.extend({
       name: '' as string,
       mail: '' as string,
       password: '' as string,
-    }
+    };
   },
   methods: {
     signUp() {
-      this.$accessor.users.signUp([this.name, this.mail, this.password])
+      this.$accessor.users.signUp([this.name, this.mail, this.password]);
     },
   },
-})
+});
 </script>

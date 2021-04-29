@@ -3,7 +3,7 @@
     <div class="column">
       <Signup />
     </div>
-    <div class="column">
+    <!-- <div class="column">
       <Signup />
     </div>
     <div class="column">
@@ -11,7 +11,7 @@
     </div>
     <div class="column">
       <Signup />
-    </div>
+    </div> -->
   </div>
 </template>
 

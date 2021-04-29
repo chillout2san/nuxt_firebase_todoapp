@@ -28,7 +28,8 @@ export default {
       '~/components',
       '~/components/header_footer',
       '~/components/signin_signup',
-    ]
+      '~/components/excuse',
+    ],
   },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
@@ -43,4 +44,4 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
-}
+};
