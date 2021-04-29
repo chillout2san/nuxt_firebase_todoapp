@@ -2,7 +2,7 @@ import { getAccessorType } from 'typed-vuex'
 
 // 例えば、store/age.ts のようなサブモジュールが存在する場合、
 // ここで import しておきます。
-import * as warehouse from '~/store/warehouse'
+import * as users from '~/store/users'
 
 // ここでは、state, getters, mutations, actions の記法は省略しています。
 // 記法については、後ほど記述する store/age.ts を参照してください。
@@ -30,6 +30,6 @@ export const accessorType = getAccessorType({
   actions,
   modules: {
     // import したサブモジュールはここに記述します。
-    warehouse,
+    users,
   },
 })
