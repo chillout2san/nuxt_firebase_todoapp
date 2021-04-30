@@ -8,10 +8,10 @@
     </div>
     <div class="column">
       <Signup />
-    </div>
-    <div class="column">
-      <Signup />
     </div> -->
+    <div class="column">
+      <Signin />
+    </div>
   </div>
 </template>
 

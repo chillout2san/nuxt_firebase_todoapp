@@ -1,19 +1,8 @@
 <template>
   <form class="box">
     <p class="is-size-5 has-text-weight-bold">
-      メールアドレスとパスワードで新規登録
+      メールアドレスとパスワードでログイン
     </p>
-    <div class="field">
-      <label class="label">ユーザー名</label>
-      <div class="control">
-        <input
-          v-model="name"
-          class="input is-success"
-          type="text"
-          placeholder="ユーザー名を入力してください"
-        />
-      </div>
-    </div>
 
     <div class="field">
       <label class="label">メールアドレス</label>
@@ -41,8 +30,9 @@
 
     <div class="field is-grouped">
       <div class="control">
+        <!-- nuxt-linkのパスをログイン後の箇所に変更すること -->
         <nuxt-link to="/relogin">
-          <button class="button is-primary" @click="signUp">会員登録</button>
+          <button class="button is-primary" @click="signIn">ログイン</button>
         </nuxt-link>
       </div>
       <div class="control">
@@ -66,11 +56,11 @@ export default Vue.extend({
     };
   },
   methods: {
-    signUp() {
-      this.$accessor.users.signUp([this.name, this.mail, this.password]);
+    signIn() {
+      // ログインする処理を書く
+      //   this.$accessor.users.signUp([this.name, this.mail, this.password]);
     },
     clearForm() {
-      this.name = '';
       this.mail = '';
       this.password = '';
     },

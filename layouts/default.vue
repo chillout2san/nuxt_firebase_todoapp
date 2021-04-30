@@ -7,6 +7,9 @@
   </div>
 </template>
 
-<style>
-
+<style scoped>
+div {
+  font-family: 'Helvetica Neue', 'Helvetica', 'Hiragino Sans',
+    'Hiragino Kaku Gothic ProN', 'Arial', 'Yu Gothic', 'Meiryo', sans-serif;
+}
 </style>
