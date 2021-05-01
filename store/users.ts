@@ -7,12 +7,15 @@ export const state = () => ({
   user_name: '' as string | null,
   admin: false as boolean,
   is_email_verified: false as boolean,
+  register_message: '',
+  login_message: '',
 });
 
 export type RootState = ReturnType<typeof state>;
 
 export const getters = getterTree(state, {
-  mail_address: (state) => state.mail_address,
+  register_message: (state) => state.register_message,
+  login_message: (state) => state.login_message,
 });
 
 export const mutations = mutationTree(state, {
@@ -21,16 +24,21 @@ export const mutations = mutationTree(state, {
     state.user_name = currentUser.displayName;
     state.is_email_verified = currentUser.emailVerified;
   },
+  setRegisterMessage(state, message: string) {
+    state.register_message = message;
+  },
 });
 
 export const actions = actionTree(
   { state, getters, mutations },
   {
-    signUp(_ctx, [name, mail, password]) {
+    signUp(ctx, [name, mail, password]: string[]): void {
       firebase
         .auth()
         .createUserWithEmailAndPassword(mail, password)
         .then(() => {
+          ctx.commit('setRegisterMessage', '');
+          this.$router.push('/message');
           const currentUser = firebase.auth().currentUser;
           currentUser!.updateProfile({
             displayName: name,
@@ -43,6 +51,12 @@ export const actions = actionTree(
             is_email_verified: false,
           });
           currentUser!.sendEmailVerification();
+        })
+        .catch(() => {
+          ctx.commit(
+            'setRegisterMessage',
+            '既に会員登録済でないか、入力内容に誤りはないか確認してください'
+          );
         });
     },
   }

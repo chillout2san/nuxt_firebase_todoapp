@@ -33,20 +33,25 @@
         <input
           v-model="password"
           class="input is-success"
-          type="email"
+          type="password"
           placeholder="パスワードを入力してください"
         />
       </div>
     </div>
 
+    <p class="pb-2 has-text-danger is-size-6">{{ $accessor.users.register_message }}</p>
+
     <div class="field is-grouped">
       <div class="control">
-        <nuxt-link to="/relogin">
-          <button class="button is-primary" @click="signUp">会員登録</button>
-        </nuxt-link>
+        <button
+          class="button is-primary"
+          @click.prevent="signUp(name, mail, password)"
+        >
+          会員登録
+        </button>
       </div>
       <div class="control">
-        <button class="button is-light is-primary" @click="clearForm">
+        <button class="button is-light is-primary" @click.prevent="clearForm">
           入力内容をクリア
         </button>
       </div>
@@ -66,8 +71,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    signUp() {
-      this.$accessor.users.signUp([this.name, this.mail, this.password]);
+    signUp(name: string, mail: string, password: string) {
+      this.$accessor.users.signUp([name, mail, password]);
     },
     clearForm() {
       this.name = '';

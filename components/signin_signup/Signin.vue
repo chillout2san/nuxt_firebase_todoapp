@@ -3,7 +3,6 @@
     <p class="is-size-5 has-text-weight-bold">
       メールアドレスとパスワードでログイン
     </p>
-
     <div class="field">
       <label class="label">メールアドレス</label>
       <div class="control">
@@ -22,21 +21,22 @@
         <input
           v-model="password"
           class="input is-success"
-          type="email"
+          type="password"
           placeholder="パスワードを入力してください"
         />
       </div>
     </div>
 
+    <p class="pb-2 has-text-danger is-size-6">
+      {{ $accessor.users.error_message }}
+    </p>
+
     <div class="field is-grouped">
       <div class="control">
-        <!-- nuxt-linkのパスをログイン後の箇所に変更すること -->
-        <nuxt-link to="/relogin">
-          <button class="button is-primary" @click="signIn">ログイン</button>
-        </nuxt-link>
+        <button class="button is-primary">ログイン</button>
       </div>
       <div class="control">
-        <button class="button is-light is-primary" @click="clearForm">
+        <button class="button is-light is-primary" @click.prevent="clearForm">
           入力内容をクリア
         </button>
       </div>
@@ -56,11 +56,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    signIn() {
-      // ログインする処理を書く
-      //   this.$accessor.users.signUp([this.name, this.mail, this.password]);
-    },
     clearForm() {
+      this.name = '';
       this.mail = '';
       this.password = '';
     },
