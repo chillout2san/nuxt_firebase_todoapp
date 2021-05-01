@@ -28,12 +28,17 @@
     </div>
 
     <p class="pb-2 has-text-danger is-size-6">
-      {{ $accessor.users.error_message }}
+      {{ $accessor.users.login_message }}
     </p>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-primary">ログイン</button>
+        <button
+          class="button is-primary"
+          @click.prevent="signIn(mail, password)"
+        >
+          ログイン
+        </button>
       </div>
       <div class="control">
         <button class="button is-light is-primary" @click.prevent="clearForm">
@@ -50,14 +55,15 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      name: '' as string,
       mail: '' as string,
       password: '' as string,
     };
   },
   methods: {
+    signIn(mail: string, password: string) {
+      this.$accessor.users.signIn([mail, password]);
+    },
     clearForm() {
-      this.name = '';
       this.mail = '';
       this.password = '';
     },
