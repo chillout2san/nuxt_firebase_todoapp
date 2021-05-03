@@ -29,6 +29,7 @@ export default {
       '~/components/header_footer',
       '~/components/signin_signup',
       '~/components/excuse',
+      '~/components/todos',
     ],
   },
 

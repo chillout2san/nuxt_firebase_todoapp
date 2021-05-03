@@ -1,19 +1,30 @@
 import { getterTree, mutationTree, actionTree } from 'typed-vuex';
-// import firebase from '../plugins/firebase';
+import firebase from '../plugins/firebase';
 
 export const state = () => ({
-  todos: [] as object[],
-  numberOfTodos: 0 as number,
+  todos: [] as firebase.firestore.DocumentData[],
 });
 
 export type RootState = ReturnType<typeof state>;
 
-export const getters = getterTree(state, {});
+export const getters = getterTree(state, {
+  todos: (state) => state.todos,
+});
 
 export const mutations = mutationTree(state, {
-  setTodosInfo(state, todos: object[]) {
+  setTodosInfo(state, todos: firebase.firestore.DocumentData[]) {
     state.todos = todos;
-    state.numberOfTodos = todos.length;
+  },
+  displayModal(state, modalId: number) {
+    const appropriateTodo = state.todos.filter((obj) => {
+      return obj.id === modalId;
+    });
+    console.log(appropriateTodo);
+    if (appropriateTodo[0].display === 'modal is-active') {
+      appropriateTodo[0].display = 'modal';
+    } else {
+      appropriateTodo[0].display = 'modal is-active';
+    }
   },
 });
 

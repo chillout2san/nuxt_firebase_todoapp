@@ -51,7 +51,6 @@ export const actions = actionTree(
               if (currentUser.emailVerified === true) {
                 ctx.commit('setLoginMessage', '');
                 ctx.commit('setUserInfo', currentUser);
-                this.$router.push('/taskwindow');
                 firebase.firestore().collection('users').doc(mail).update({
                   is_email_verified: true,
                 });
@@ -62,12 +61,14 @@ export const actions = actionTree(
                   .collection('todos')
                   .get()
                   .then((snapshot) => {
-                    const todos: object[] = [];
+                    const todos: firebase.firestore.DocumentData[] = [];
                     snapshot.forEach((doc) => {
                       const todo = doc.data();
+                      todo.display = 'modal';
                       todos.push(todo);
                     });
                     this.app.$accessor.todos.receiveTodos(todos);
+                    this.$router.push('/taskwindow');
                   });
               } else {
                 ctx.commit(
