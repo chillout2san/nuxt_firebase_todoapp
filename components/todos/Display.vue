@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h1>ToDoリスト</h1>
+    <h1 class="has-text-weight-bold">タスクリスト</h1>
     <table class="table">
       <thead>
         <tr>
@@ -12,22 +12,25 @@
       </thead>
       <tbody>
         <tr v-for="(todo, index) in $accessor.todos.todos" :key="index">
-          <td>{{ todo.id }}</td>
-          <td>{{ todo.name }}</td>
+          <td>{{ todo.todo_id }}</td>
+          <td>{{ todo.todo_name }}</td>
 
           <td>{{ todo.deadline }}</td>
 
           <td>
             <button
               class="button is-primary is-small"
-              @click="changeModal(todo.id)"
+              @click="changeModal(todo.todo_id)"
             >
               詳細
             </button>
           </td>
           <td>
             <div :class="todo.display">
-              <div class="modal-background" @click="changeModal(todo.id)"></div>
+              <div
+                class="modal-background"
+                @click="changeModal(todo.todo_id)"
+              ></div>
               <div class="modal-content">
                 <div class="box">
                   {{ todo.status }}
@@ -37,7 +40,7 @@
               </div>
               <button
                 class="modal-close is-large"
-                @click="changeModal(todo.id)"
+                @click="changeModal(todo.todo_id)"
               ></button>
             </div>
           </td>

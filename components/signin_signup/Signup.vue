@@ -1,8 +1,8 @@
 <template>
   <form class="box">
-    <p class="is-size-5 has-text-weight-bold">
+    <h1 class="is-size-5 has-text-weight-bold">
       メールアドレスとパスワードで新規登録
-    </p>
+    </h1>
     <div class="field">
       <label class="label">ユーザー名</label>
       <div class="control">

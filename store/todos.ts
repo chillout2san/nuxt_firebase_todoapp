@@ -9,6 +9,7 @@ export type RootState = ReturnType<typeof state>;
 
 export const getters = getterTree(state, {
   todos: (state) => state.todos,
+  todosLength: (state) => state.todos.length,
 });
 
 export const mutations = mutationTree(state, {
@@ -17,9 +18,8 @@ export const mutations = mutationTree(state, {
   },
   displayModal(state, modalId: number) {
     const appropriateTodo = state.todos.filter((obj) => {
-      return obj.id === modalId;
+      return obj.todo_id === modalId;
     });
-    console.log(appropriateTodo);
     if (appropriateTodo[0].display === 'modal is-active') {
       appropriateTodo[0].display = 'modal';
     } else {
@@ -33,6 +33,43 @@ export const actions = actionTree(
   {
     receiveTodos(ctx, todos: object[]) {
       ctx.commit('setTodosInfo', todos);
+    },
+    pushTask(ctx, [name, information, deadLine, alertFunction]) {
+      const mail = this.app.$accessor.users.mail_address;
+      const todoId = ctx.getters.todosLength + 1;
+      if (mail) {
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(mail)
+          .collection('todos')
+          .doc(todoId.toString())
+          .set({
+            todo_id: todoId,
+            todo_name: name,
+            info: information,
+            status: '作業中',
+            deadline: deadLine,
+            alert_function: alertFunction,
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(mail)
+              .collection('todos')
+              .get()
+              .then((snapshot) => {
+                const todos: firebase.firestore.DocumentData[] = [];
+                snapshot.forEach((doc) => {
+                  const todo = doc.data();
+                  todo.display = 'modal';
+                  todos.push(todo);
+                });
+                ctx.commit('setTodosInfo', todos);
+              });
+          });
+      }
     },
   }
 );

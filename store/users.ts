@@ -67,8 +67,8 @@ export const actions = actionTree(
                       todo.display = 'modal';
                       todos.push(todo);
                     });
+                    this.$router.push('/todoswindow');
                     this.app.$accessor.todos.receiveTodos(todos);
-                    this.$router.push('/taskwindow');
                   });
               } else {
                 ctx.commit(
