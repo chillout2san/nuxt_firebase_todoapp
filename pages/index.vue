@@ -1,5 +1,5 @@
 <template>
-  <div class="columns">
+  <div class="columns is-desktop">
     <div class="column">
       <Signup />
     </div>

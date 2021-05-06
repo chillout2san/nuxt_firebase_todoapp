@@ -22,8 +22,28 @@
       </div>
 
       <label class="label has-text-weight-normal">締め切り</label>
-      <div class="control">
-        <input v-model="deadline" class="input is-success is-small" />
+      <!-- <input v-model="deadlineYear" class="input is-success is-small" /> -->
+
+      <div class="control pb-2">
+        <div>
+          <select v-model="deadlineYear">
+            <option v-for="(year, key) in years" :key="key" :value="year">
+              {{ year }}
+            </option></select
+          >年
+
+          <select v-model="deadlineMonth">
+            <option v-for="(month, key) in monthes" :key="key" :value="month">
+              {{ month }}
+            </option></select
+          >月
+
+          <select v-model="deadlineDay">
+            <option v-for="(day, key) in days" :key="key" :value="day">
+              {{ day }}
+            </option></select
+          >日
+        </div>
       </div>
 
       <label class="label has-text-weight-normal">締め切りアラート</label>
@@ -77,9 +97,41 @@ export default Vue.extend({
     return {
       name: '' as string,
       info: '' as string,
-      deadline: 0 as number,
+      deadlineYear: '' as string,
+      deadlineMonth: '' as string,
+      deadlineDay: '' as string,
       alert_function: true as boolean,
     };
+  },
+  computed: {
+    deadline(): string {
+      const deadline =
+        this.deadlineYear + '/' + this.deadlineMonth + '/' + this.deadlineDay;
+      return deadline;
+    },
+    years(): string[] {
+      let presentYear = new Date().getFullYear();
+      const years = [];
+      for (let i = 0; i < 5; i++) {
+        years.push(presentYear.toString());
+        presentYear++;
+      }
+      return years;
+    },
+    monthes(): string[] {
+      const monthes = [];
+      for (let i = 1; i < 13; i++) {
+        monthes.push(i.toString());
+      }
+      return monthes;
+    },
+    days(): string[] {
+      const days = [];
+      for (let i = 1; i < 32; i++) {
+        days.push(i.toString());
+      }
+      return days;
+    },
   },
   methods: {
     change_alert_function(boolean: boolean) {
@@ -88,13 +140,13 @@ export default Vue.extend({
     clearForm() {
       this.name = '';
       this.info = '';
-      this.deadline = 0;
+      this.deadline = '';
       this.alert_function = true;
     },
     pushTask(
       name: string,
       info: string,
-      deadline: number,
+      deadline: string,
       alertFunction: boolean
     ) {
       this.$accessor.todos.pushTask([name, info, deadline, alertFunction]);
