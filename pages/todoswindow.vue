@@ -1,12 +1,12 @@
 <template>
-  <div class="columns is-multiline">
-    <div class="column is-12">
+  <div class="columns is-desktop">
+    <div class="column">
       <Push />
     </div>
-    <div class="column is-12">
+    <div class="column">
       <Display />
     </div>
-    <div class="column is-12">
+    <div class="column">
       <SelectedDisplay />
     </div>
   </div>

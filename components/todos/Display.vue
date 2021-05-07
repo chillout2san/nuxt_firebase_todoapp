@@ -4,9 +4,10 @@
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>名前</th>
-          <th>締め切り</th>
+          <th class="nowrap">ID</th>
+          <th class="nowrap">名前</th>
+          <th class="nowrap">進捗状況</th>
+          <th class="nowrap">締め切り</th>
           <th></th>
         </tr>
       </thead>
@@ -14,7 +15,7 @@
         <tr v-for="(todo, index) in $accessor.todos.todos" :key="index">
           <td>{{ todo.todo_id }}</td>
           <td>{{ todo.todo_name }}</td>
-
+          <td>{{ todo.status }}</td>
           <td>{{ todo.deadline }}</td>
 
           <td>
@@ -64,3 +65,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.nowrap {
+  white-space: nowrap;
+}
+</style>

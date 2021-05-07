@@ -21,29 +21,44 @@
         ></textarea>
       </div>
 
-      <label class="label has-text-weight-normal">締め切り</label>
-      <!-- <input v-model="deadlineYear" class="input is-success is-small" /> -->
+      <label class="label has-text-weight-normal">進捗状況</label>
+      <div class="control">
+        <div class="select is-success is-small">
+          <select v-model="status">
+            <option>作業中</option>
+            <option>依頼中</option>
+          </select>
+        </div>
+      </div>
 
+      <label class="label has-text-weight-normal">締め切り</label>
       <div class="control pb-2">
-        <div>
+        <div class="select is-success is-small">
           <select v-model="deadlineYear">
             <option v-for="(year, key) in years" :key="key" :value="year">
               {{ year }}
-            </option></select
-          >年
+            </option>
+          </select>
+        </div>
+        年
 
+        <div class="select is-success is-small">
           <select v-model="deadlineMonth">
             <option v-for="(month, key) in monthes" :key="key" :value="month">
               {{ month }}
-            </option></select
-          >月
+            </option>
+          </select>
+        </div>
+        月
 
+        <div class="select is-success is-small">
           <select v-model="deadlineDay">
             <option v-for="(day, key) in days" :key="key" :value="day">
               {{ day }}
-            </option></select
-          >日
+            </option>
+          </select>
         </div>
+        日
       </div>
 
       <label class="label has-text-weight-normal">締め切りアラート</label>
@@ -72,7 +87,9 @@
       <div class="control">
         <button
           class="button is-primary is-small"
-          @click.prevent="pushTask(name, info, deadline, alert_function)"
+          @click.prevent="
+            pushTask(name, info, status, deadline, alert_function)
+          "
         >
           登録
         </button>
@@ -97,6 +114,7 @@ export default Vue.extend({
     return {
       name: '' as string,
       info: '' as string,
+      status: '' as string,
       deadlineYear: '' as string,
       deadlineMonth: '' as string,
       deadlineDay: '' as string,
@@ -146,10 +164,17 @@ export default Vue.extend({
     pushTask(
       name: string,
       info: string,
+      status: string,
       deadline: string,
       alertFunction: boolean
     ) {
-      this.$accessor.todos.pushTask([name, info, deadline, alertFunction]);
+      this.$accessor.todos.pushTask([
+        name,
+        info,
+        status,
+        deadline,
+        alertFunction,
+      ]);
     },
   },
 });

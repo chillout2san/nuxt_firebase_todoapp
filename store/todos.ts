@@ -34,7 +34,7 @@ export const actions = actionTree(
     receiveTodos(ctx, todos: object[]) {
       ctx.commit('setTodosInfo', todos);
     },
-    pushTask(ctx, [name, information, deadLine, alertFunction]) {
+    pushTask(ctx, [name, information, todoStatus, deadLine, alertFunction]) {
       const mail = this.app.$accessor.users.mail_address;
       const todoId = ctx.getters.todosLength + 1;
       if (mail) {
@@ -48,7 +48,7 @@ export const actions = actionTree(
             todo_id: todoId,
             todo_name: name,
             info: information,
-            status: '作業中',
+            status: todoStatus,
             deadline: deadLine,
             alert_function: alertFunction,
           })
