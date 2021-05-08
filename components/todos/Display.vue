@@ -8,6 +8,7 @@
           <th class="nowrap">名前</th>
           <th class="nowrap">進捗状況</th>
           <th class="nowrap">締め切り</th>
+          <th class="nowrap">アラート</th>
           <th></th>
         </tr>
       </thead>
@@ -17,7 +18,7 @@
           <td>{{ todo.todo_name }}</td>
           <td>{{ todo.status }}</td>
           <td>{{ todo.deadline }}</td>
-
+          <td>{{ todo.alert_function }}</td>
           <td>
             <button
               class="button is-primary is-small"
@@ -33,11 +34,7 @@
                 @click="changeModal(todo.todo_id)"
               ></div>
               <div class="modal-content">
-                <div class="box">
-                  {{ todo.status }}
-                  {{ todo.info }}
-                  {{ todo.alert_function }}
-                </div>
+                {{ todo.info }}
               </div>
               <button
                 class="modal-close is-large"

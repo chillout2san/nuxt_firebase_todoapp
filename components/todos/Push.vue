@@ -61,7 +61,7 @@
         日
       </div>
 
-      <label class="label has-text-weight-normal">締め切りアラート</label>
+      <label class="label has-text-weight-normal">アラート</label>
       <div class="control">
         <label class="radio">
           <input
