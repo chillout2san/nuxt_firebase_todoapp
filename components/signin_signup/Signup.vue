@@ -8,7 +8,7 @@
       <div class="control">
         <input
           v-model="name"
-          class="input is-success"
+          class="input is-primary"
           type="text"
           placeholder="ユーザー名を入力してください"
         />
@@ -20,7 +20,7 @@
       <div class="control">
         <input
           v-model="mail"
-          class="input is-success"
+          class="input is-primary"
           type="email"
           placeholder="メールアドレスを入力してください"
         />
@@ -32,7 +32,7 @@
       <div class="control">
         <input
           v-model="password"
-          class="input is-success"
+          class="input is-primary"
           type="password"
           placeholder="パスワードを入力してください"
         />

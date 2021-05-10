@@ -21,27 +21,41 @@
           <td>{{ todo.alert_function }}</td>
           <td>
             <button
-              class="button is-primary is-small"
+              class="button is-primary is-small has-text-weight-bold"
               @click="changeModal(todo.todo_id)"
             >
               詳細
             </button>
           </td>
           <td>
-            <div :class="todo.display">
-              <div
-                class="modal-background"
-                @click="changeModal(todo.todo_id)"
-              ></div>
-              <div class="modal-content">
-                {{ todo.info }}
-              </div>
-              <button
-                class="modal-close is-large"
-                @click="changeModal(todo.todo_id)"
-              ></button>
-            </div>
+            <button
+              class="button is-primary is-small is-light has-text-weight-bold"
+            >
+              編集
+            </button>
           </td>
+          <div :class="todo.display">
+            <div
+              class="modal-background"
+              @click="changeModal(todo.todo_id)"
+            ></div>
+            <div class="modal-content">
+              <div class="box">
+                <div class="message is-primary">
+                  <div class="message-header">
+                    <p>{{ todo.todo_name }}</p>
+                  </div>
+                  <div class="message-body">
+                    {{ todo.info }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="modal-close is-large"
+              @click="changeModal(todo.todo_id)"
+            ></button>
+          </div>
         </tr>
       </tbody>
     </table>
@@ -53,7 +67,10 @@ import Vue from 'vue';
 
 export default Vue.extend({
   data() {
-    return {};
+    return {
+      enable_alert_function: '有効',
+      disable_alert_function: '無効',
+    };
   },
   methods: {
     changeModal(id: number) {

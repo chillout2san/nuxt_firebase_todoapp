@@ -6,7 +6,7 @@
       <div class="control">
         <input
           v-model="name"
-          class="input is-success is-small"
+          class="input is-primary is-small"
           placeholder="例）買い物"
         />
       </div>
@@ -15,7 +15,7 @@
       <div class="control">
         <textarea
           v-model="info"
-          class="textarea is-success is-small"
+          class="textarea is-primary is-small"
           placeholder="例）予算は千円"
           rows="3"
         ></textarea>
@@ -23,7 +23,7 @@
 
       <label class="label has-text-weight-normal">進捗状況</label>
       <div class="control">
-        <div class="select is-success is-small">
+        <div class="select is-primary is-small">
           <select v-model="status">
             <option>作業中</option>
             <option>依頼中</option>
@@ -33,7 +33,7 @@
 
       <label class="label has-text-weight-normal">締め切り</label>
       <div class="control pb-2">
-        <div class="select is-success is-small">
+        <div class="select is-primary is-small">
           <select v-model="deadlineYear">
             <option v-for="(year, key) in years" :key="key" :value="year">
               {{ year }}
@@ -42,7 +42,7 @@
         </div>
         年
 
-        <div class="select is-success is-small">
+        <div class="select is-primary is-small">
           <select v-model="deadlineMonth">
             <option v-for="(month, key) in monthes" :key="key" :value="month">
               {{ month }}
@@ -51,7 +51,7 @@
         </div>
         月
 
-        <div class="select is-success is-small">
+        <div class="select is-primary is-small">
           <select v-model="deadlineDay">
             <option v-for="(day, key) in days" :key="key" :value="day">
               {{ day }}
@@ -68,7 +68,7 @@
             type="radio"
             name="answer"
             checked
-            @click="change_alert_function(true)"
+            @click="change_alert_function('有効')"
           />
           有効
         </label>
@@ -76,7 +76,7 @@
           <input
             type="radio"
             name="answer"
-            @click="change_alert_function(false)"
+            @click="change_alert_function('無効')"
           />
           無効
         </label>
@@ -86,7 +86,7 @@
     <div class="field is-grouped">
       <div class="control">
         <button
-          class="button is-primary is-small"
+          class="button is-primary is-small has-text-weight-bold"
           @click.prevent="
             pushTask(name, info, status, deadline, alert_function)
           "
@@ -96,7 +96,7 @@
       </div>
       <div class="control">
         <button
-          class="button is-light is-primary is-small"
+          class="button is-light is-primary is-small has-text-weight-bold"
           @click.prevent="clearForm"
         >
           入力内容をクリア
@@ -118,7 +118,7 @@ export default Vue.extend({
       deadlineYear: '' as string,
       deadlineMonth: '' as string,
       deadlineDay: '' as string,
-      alert_function: true as boolean,
+      alert_function: '有効' as string,
     };
   },
   computed: {
@@ -152,21 +152,24 @@ export default Vue.extend({
     },
   },
   methods: {
-    change_alert_function(boolean: boolean) {
+    change_alert_function(boolean: string) {
       this.alert_function = boolean;
     },
     clearForm() {
       this.name = '';
       this.info = '';
+      this.status = '';
+      this.deadlineYear = '';
+      this.deadlineMonth = '';
+      this.deadlineDay = '';
       this.deadline = '';
-      this.alert_function = true;
     },
     pushTask(
       name: string,
       info: string,
       status: string,
       deadline: string,
-      alertFunction: boolean
+      alertFunction: string
     ) {
       this.$accessor.todos.pushTask([
         name,
@@ -175,6 +178,13 @@ export default Vue.extend({
         deadline,
         alertFunction,
       ]);
+      this.name = '';
+      this.info = '';
+      this.status = '';
+      this.deadlineYear = '';
+      this.deadlineMonth = '';
+      this.deadlineDay = '';
+      this.deadline = '';
     },
   },
 });
