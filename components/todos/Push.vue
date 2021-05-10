@@ -88,7 +88,7 @@
         <button
           class="button is-primary is-small has-text-weight-bold"
           @click.prevent="
-            pushTask(name, info, status, deadline, alert_function)
+            pushTodo(name, info, status, deadline, alert_function)
           "
         >
           登録
@@ -118,15 +118,11 @@ export default Vue.extend({
       deadlineYear: '' as string,
       deadlineMonth: '' as string,
       deadlineDay: '' as string,
+      deadline: '' as string,
       alert_function: '有効' as string,
     };
   },
   computed: {
-    deadline(): string {
-      const deadline =
-        this.deadlineYear + '/' + this.deadlineMonth + '/' + this.deadlineDay;
-      return deadline;
-    },
     years(): string[] {
       let presentYear = new Date().getFullYear();
       const years = [];
@@ -164,14 +160,16 @@ export default Vue.extend({
       this.deadlineDay = '';
       this.deadline = '';
     },
-    pushTask(
+    pushTodo(
       name: string,
       info: string,
       status: string,
       deadline: string,
       alertFunction: string
     ) {
-      this.$accessor.todos.pushTask([
+      deadline =
+        this.deadlineYear + '/' + this.deadlineMonth + '/' + this.deadlineDay;
+      this.$accessor.todos.pushTodo([
         name,
         info,
         status,

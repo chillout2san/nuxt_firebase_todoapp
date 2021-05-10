@@ -10,6 +10,7 @@ export type RootState = ReturnType<typeof state>;
 export const getters = getterTree(state, {
   todos: (state) => state.todos,
   todosLength: (state) => state.todos.length,
+  selectedTodo: (state) => state.todos
 });
 
 export const mutations = mutationTree(state, {
@@ -34,7 +35,7 @@ export const actions = actionTree(
     receiveTodos(ctx, todos: object[]) {
       ctx.commit('setTodosInfo', todos);
     },
-    pushTask(ctx, [name, information, todoStatus, deadLine, alertFunction]) {
+    pushTodo(ctx, [name, information, todoStatus, deadLine, alertFunction]) {
       const mail = this.app.$accessor.users.mail_address;
       const todoId = ctx.getters.todosLength + 1;
       if (mail) {
@@ -69,6 +70,35 @@ export const actions = actionTree(
                 ctx.commit('setTodosInfo', todos);
               });
           });
+      }
+    },
+    deleteTodo(ctx, deleteId: number) {
+      const mail = this.app.$accessor.users.mail_address;
+      if (mail) {
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(mail)
+          .collection('todos')
+          .doc(deleteId.toString())
+          .delete()
+          .then(() => {
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(mail)
+              .collection('todos')
+              .get()
+              .then((snapshot) => {
+                const todos: firebase.firestore.DocumentData[] = [];
+                snapshot.forEach((doc) => {
+                  const todo = doc.data();
+                  todo.display = 'modal';
+                  todos.push(todo);
+                });
+                ctx.commit('setTodosInfo', todos);
+              })
+          })
       }
     },
   }
