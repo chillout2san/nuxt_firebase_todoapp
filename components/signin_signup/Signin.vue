@@ -1,14 +1,14 @@
 <template>
   <form class="box">
-    <p class="is-size-5 has-text-weight-bold">
+    <h1 class="is-size-5 has-text-weight-bold">
       メールアドレスとパスワードでログイン
-    </p>
+    </h1>
     <div class="field">
       <label class="label">メールアドレス</label>
       <div class="control">
         <input
           v-model="mail"
-          class="input is-success"
+          class="input is-primary"
           type="email"
           placeholder="メールアドレスを入力してください"
         />
@@ -20,7 +20,7 @@
       <div class="control">
         <input
           v-model="password"
-          class="input is-success"
+          class="input is-primary"
           type="password"
           placeholder="パスワードを入力してください"
         />
@@ -41,7 +41,7 @@
         </button>
       </div>
       <div class="control">
-        <button class="button is-light is-primary" @click.prevent="clearForm">
+        <button class="button is-primary is-light" @click.prevent="clearForm">
           入力内容をクリア
         </button>
       </div>

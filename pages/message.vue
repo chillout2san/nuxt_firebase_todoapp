@@ -7,7 +7,10 @@
       メール内のリンクからアカウントを認証してください。
     </p>
     <div class="has-text-centered">
-      <button class="button is-centered is-rounded is-primary">
+      <button
+        class="button is-centered is-rounded is-primary"
+        @click.prevent="backToHome"
+      >
         ログイン画面に戻る
       </button>
     </div>
@@ -19,6 +22,9 @@ import Vue from 'vue';
 
 export default Vue.extend({
   methods: {
+    backToHome() {
+      this.$router.push('/');
+    },
   },
 });
 </script>

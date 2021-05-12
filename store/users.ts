@@ -41,65 +41,81 @@ export const actions = actionTree(
     signIn(ctx, [mail, password]: string[]): void {
       firebase
         .auth()
-        .signInWithEmailAndPassword(mail, password)
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() => {
-          const currentUser = firebase.auth().currentUser!;
-          if (currentUser.emailVerified === true) {
-            ctx.commit('setLoginMessage', '');
-            ctx.commit('setUserInfo', currentUser);
-            console.log(ctx);
-            this.$router.push('/taskwindow');
-            firebase.firestore().collection('users').doc(mail).update({
-              is_email_verified: true,
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(mail, password)
+            .then(() => {
+              const currentUser = firebase.auth().currentUser!;
+              if (currentUser.emailVerified === true) {
+                ctx.commit('setLoginMessage', '');
+                ctx.commit('setUserInfo', currentUser);
+                firebase.firestore().collection('users').doc(mail).update({
+                  is_email_verified: true,
+                });
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(mail)
+                  .collection('todos')
+                  .get()
+                  .then((snapshot) => {
+                    const todos: firebase.firestore.DocumentData[] = [];
+                    snapshot.forEach((doc) => {
+                      const todo = doc.data();
+                      todo.display = 'modal';
+                      todos.push(todo);
+                    });
+                    this.$router.push('/todoswindow');
+                    this.app.$accessor.todos.receiveTodos(todos);
+                  });
+              } else {
+                ctx.commit(
+                  'setLoginMessage',
+                  'メール認証がされていないアカウントです。'
+                );
+              }
+            })
+            .catch(() => {
+              ctx.commit(
+                'setLoginMessage',
+                'アカウントが登録されていないか、入力内容に誤りがあります。'
+              );
             });
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(mail)
-              .get()
-              .then((doc) => {
-                console.log(doc);
-              });
-          } else {
-            ctx.commit(
-              'setLoginMessage',
-              'メール認証がされていないアカウントです。'
-            );
-          }
-        })
-        .catch(() => {
-          ctx.commit(
-            'setLoginMessage',
-            'アカウントが登録されていないか、入力内容に誤りがあります。'
-          );
         });
     },
     signUp(ctx, [name, mail, password]: string[]): void {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(mail, password)
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() => {
-          ctx.commit('setRegisterMessage', '');
-          const currentUser = firebase.auth().currentUser!;
-          currentUser!.updateProfile({
-            displayName: name,
-          });
-          ctx.commit('setUserInfo', currentUser);
-          this.$router.push('/message');
-          firebase.firestore().collection('users').doc(mail).set({
-            mail_address: mail,
-            user_id: currentUser?.uid,
-            user_name: name,
-            admin: false,
-            is_email_verified: false,
-          });
-          currentUser!.sendEmailVerification();
-        })
-        .catch(() => {
-          ctx.commit(
-            'setRegisterMessage',
-            '既に会員登録済でないか、入力内容に誤りがあります。'
-          );
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(mail, password)
+            .then(() => {
+              ctx.commit('setRegisterMessage', '');
+              const currentUser = firebase.auth().currentUser!;
+              currentUser!.updateProfile({
+                displayName: name,
+              });
+              ctx.commit('setUserInfo', currentUser);
+              this.$router.push('/message');
+              firebase.firestore().collection('users').doc(mail).set({
+                mail_address: mail,
+                user_id: currentUser?.uid,
+                user_name: name,
+                admin: false,
+                is_email_verified: false,
+              });
+              currentUser!.sendEmailVerification();
+            })
+            .catch(() => {
+              ctx.commit(
+                'setRegisterMessage',
+                '既に会員登録済でないか、入力内容に誤りがあります。'
+              );
+            });
         });
     },
   }

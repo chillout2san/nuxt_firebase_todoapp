@@ -1,20 +1,12 @@
-import { getters } from '../store/users';
+import firebase from '../plugins/firebase';
 
-export default function ({ route, redirect }) {
-  if (route.path === '/message') {
-    const string = getters.is_email_verified;
-    if (!string) {
+export default function ({ route, redirect }: any) {
+  if (route.path === '/todoswindow') {
+    const user = firebase.auth().currentUser?.emailVerified;
+    if (user === undefined) {
       redirect('/');
-    }
-  }
-  if (route.path === '/taskwindow') {
-    const boolean = getters.is_email_verified;
-    if (boolean !== true) {
-      console.log(boolean);
-      console.log('if');
+    } else if (user === false) {
       redirect('/');
-    } else {
-      console.log('else');
     }
   }
 }
