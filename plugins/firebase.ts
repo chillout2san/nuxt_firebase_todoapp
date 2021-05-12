@@ -10,7 +10,4 @@ firebase.initializeApp({
   measurementId: 'G-GMVYC7L98V',
 });
 
-const today = new Date('2021/3/21');
-console.log(today);
-
 export default firebase;

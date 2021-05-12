@@ -132,4 +132,8 @@ export default Vue.extend({
 .nowrap {
   white-space: nowrap;
 }
+
+.box {
+  overflow: scroll;
+}
 </style>

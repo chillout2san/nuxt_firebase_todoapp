@@ -10,7 +10,6 @@ export type RootState = ReturnType<typeof state>;
 export const getters = getterTree(state, {
   todos: (state) => state.todos,
   todosLength: (state) => state.todos.length,
-  selectedTodo: (state) => state.todos
 });
 
 export const mutations = mutationTree(state, {
@@ -44,7 +43,7 @@ export const actions = actionTree(
           .collection('users')
           .doc(mail)
           .collection('todos')
-          .doc(todoId.toString())
+          .doc()
           .set({
             todo_id: todoId,
             todo_name: name,
@@ -80,8 +79,13 @@ export const actions = actionTree(
           .collection('users')
           .doc(mail)
           .collection('todos')
-          .doc(deleteId.toString())
-          .delete()
+          .where('todo_id', '==', deleteId)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              doc.ref.delete();
+            });
+          })
           .then(() => {
             firebase
               .firestore()
@@ -95,10 +99,15 @@ export const actions = actionTree(
                   const todo = doc.data();
                   todo.display = 'modal';
                   todos.push(todo);
+                  if (doc.exists) {
+                    doc.ref.update({
+                      todo_id: todos.indexOf(todo),
+                    });
+                  }
                 });
                 ctx.commit('setTodosInfo', todos);
-              })
-          })
+              });
+          });
       }
     },
   }

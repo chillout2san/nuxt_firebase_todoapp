@@ -187,3 +187,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.box {
+  overflow: scroll;
+}
+</style>
