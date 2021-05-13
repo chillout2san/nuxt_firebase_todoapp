@@ -99,11 +99,13 @@ export const actions = actionTree(
                   const todo = doc.data();
                   todo.display = 'modal';
                   todos.push(todo);
-                  if (doc.exists) {
-                    doc.ref.update({
-                      todo_id: todos.indexOf(todo),
-                    });
-                  }
+                  const index = todos.indexOf(todo) + 1;
+                  doc.ref.update({
+                    todo_id: index,
+                  });
+                  todos.forEach((todo) => {
+                    todo.todo_id = todos.indexOf(todo) + 1;
+                  });
                 });
                 ctx.commit('setTodosInfo', todos);
               });
