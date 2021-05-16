@@ -71,7 +71,8 @@ export const actions = actionTree(
                     const todos: firebase.firestore.DocumentData[] = [];
                     snapshot.forEach((doc) => {
                       const todo = doc.data();
-                      todo.display = 'modal';
+                      todo.detail_display = 'modal';
+                      todo.edit_display = 'modal'
                       todos.push(todo);
                     });
                     this.$router.push('/todoswindow');

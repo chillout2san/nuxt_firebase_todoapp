@@ -39,21 +39,25 @@
           <td>{{ todo.status }}</td>
           <td>{{ todo.deadline }}</td>
           <td>{{ todo.alert_function }}</td>
+          <!-- 詳細ボタンを表示する -->
           <td>
             <button
               class="button is-primary is-small has-text-weight-bold"
-              @click="changeModal(todo.todo_id)"
+              @click="changeDetailModal(todo.todo_id)"
             >
               詳細
             </button>
           </td>
+          <!-- 編集ボタンを表示する -->
           <td>
             <button
               class="button is-primary is-small is-light has-text-weight-bold"
+              @click="changeEditModal(todo.todo_id)"
             >
               編集
             </button>
           </td>
+          <!-- 削除ボタンを表示する -->
           <td>
             <button
               class="button is-small is-light has-text-weight-bold"
@@ -62,10 +66,11 @@
               削除
             </button>
           </td>
-          <div :class="todo.display">
+          <!-- 詳細ボタンを押下した時のモーダルウィンドウ -->
+          <div :class="todo.detail_display">
             <div
               class="modal-background"
-              @click="changeModal(todo.todo_id)"
+              @click="changeDetailModal(todo.todo_id)"
             ></div>
             <div class="modal-content">
               <div class="box">
@@ -81,7 +86,36 @@
             </div>
             <button
               class="modal-close is-large"
-              @click="changeModal(todo.todo_id)"
+              @click="changeDetailModal(todo.todo_id)"
+            ></button>
+          </div>
+          <!-- 編集ボタンを押下した際のモーダルウィンドウ -->
+          <div :class="todo.edit_display">
+            <div
+              class="modal-background"
+              @click="changeEditModal(todo.todo_id)"
+            ></div>
+            <div class="modal-content">
+              <div class="box">
+                <div class="message is-primary">
+                  <div class="message-header">
+                    <p>{{ todo.todo_name }}</p>
+                  </div>
+                  <div class="message-body">
+                    {{ todo.info }}
+                    <button
+                      class="button is-primary is-small has-text-weight-bold"
+                      @click="enableWorking(todo.todo_id)"
+                    >
+                      今日のタスクリストに表示
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="modal-close is-large"
+              @click="changeEditModal(todo.todo_id)"
             ></button>
           </div>
         </tr>
@@ -113,14 +147,20 @@ export default Vue.extend({
     },
   },
   methods: {
-    changeModal(id: number) {
-      this.$accessor.todos.displayModal(id);
+    changeDetailModal(id: number) {
+      this.$accessor.todos.displayDetailModal(id);
+    },
+    changeEditModal(id: number) {
+      this.$accessor.todos.displayEditModal(id);
     },
     changeStatus(status: string): void {
       this.status = status;
     },
     deleteTodo(id: number) {
       this.$accessor.todos.deleteTodo(id);
+    },
+    enableWorking(id: number) {
+      this.$accessor.todos.enableWorkingDisplay(id);
     },
   },
 });

@@ -11,7 +11,6 @@
           <th class="nowrap">アラート</th>
           <th></th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -21,33 +20,29 @@
           <td>{{ todo.status }}</td>
           <td>{{ todo.deadline }}</td>
           <td>{{ todo.alert_function }}</td>
+          <!-- 詳細ボタンを表示する -->
           <td>
             <button
               class="button is-primary is-small has-text-weight-bold"
-              @click="changeModal(todo.todo_id)"
+              @click="changeDetailModal(todo.todo_id)"
             >
               詳細
             </button>
           </td>
-          <td>
-            <button
-              class="button is-primary is-small is-light has-text-weight-bold"
-            >
-              編集
-            </button>
-          </td>
+          <!-- 非表示ボタンを表示する -->
           <td>
             <button
               class="button is-small is-light has-text-weight-bold"
-              @click="deleteTodo(todo.todo_id)"
+              @click="disableWorking(todo.todo_id)"
             >
-              削除
+              非表示
             </button>
           </td>
-          <div :class="todo.display">
+          <!-- 詳細ボタンを押下した時のモーダルウィンドウ -->
+          <div :class="todo.detail_display">
             <div
               class="modal-background"
-              @click="changeModal(todo.todo_id)"
+              @click="changeDetailModal(todo.todo_id)"
             ></div>
             <div class="modal-content">
               <div class="box">
@@ -63,7 +58,7 @@
             </div>
             <button
               class="modal-close is-large"
-              @click="changeModal(todo.todo_id)"
+              @click="changeDetailModal(todo.todo_id)"
             ></button>
           </div>
         </tr>
@@ -88,11 +83,14 @@ export default Vue.extend({
     },
   },
   methods: {
-    changeModal(id: number) {
-      this.$accessor.todos.displayModal(id);
+    changeDetailModal(id: number) {
+      this.$accessor.todos.displayDetailModal(id);
     },
     deleteTodo(id: number) {
       this.$accessor.todos.deleteTodo(id);
+    },
+    disableWorking(id: number) {
+      this.$accessor.todos.disableWorkingDisplay(id);
     },
   },
 });
