@@ -1,24 +1,6 @@
 <template>
   <div class="box">
-    <h1 class="has-text-weight-bold">タスクリスト</h1>
-    <div class="control">
-      <label class="radio" @click="changeStatus('全て')">
-        <input type="radio" name="answer" checked />
-        全て
-      </label>
-      <label class="radio" @click="changeStatus('作業中')">
-        <input type="radio" name="answer" />
-        作業中
-      </label>
-      <label class="radio" @click="changeStatus('依頼中')">
-        <input type="radio" name="answer" />
-        依頼中
-      </label>
-      <label class="radio" @click="changeStatus('完了')">
-        <input type="radio" name="answer" />
-        完了
-      </label>
-    </div>
+    <h1 class="has-text-weight-bold">今日のタスクリスト</h1>
     <table class="table is-hoverable">
       <thead>
         <tr>
@@ -33,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(todo, index) in selectedTodos" :key="index">
+        <tr v-for="(todo, index) in workingTodos" :key="index">
           <td>{{ todo.todo_id }}</td>
           <td>{{ todo.todo_name }}</td>
           <td>{{ todo.status }}</td>
@@ -96,28 +78,18 @@ import firebase from 'plugins/firebase';
 
 export default Vue.extend({
   data() {
-    return {
-      status: '全て',
-    };
+    return {};
   },
   computed: {
-    selectedTodos(): firebase.firestore.DocumentData[] {
-      const selectedStatus = this.status;
-      if (selectedStatus === '全て') {
-        return this.$accessor.todos.todos;
-      } else {
-        return this.$accessor.todos.todos.filter((todo) => {
-          return todo.status === selectedStatus;
-        });
-      }
+    workingTodos(): firebase.firestore.DocumentData[] {
+      return this.$accessor.todos.todos.filter((todo) => {
+        return todo.working === true;
+      });
     },
   },
   methods: {
     changeModal(id: number) {
       this.$accessor.todos.displayModal(id);
-    },
-    changeStatus(status: string): void {
-      this.status = status;
     },
     deleteTodo(id: number) {
       this.$accessor.todos.deleteTodo(id);
