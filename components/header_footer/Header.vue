@@ -1,5 +1,11 @@
 <template>
-    <div>
-        ヘッダーだよ
-    </div>
+  <header class="box">
+    <div>ヘッダーだよ</div>
+  </header>
 </template>
+
+<style scoped>
+.box {
+    text-align: center;
+}
+</style>

@@ -7,7 +7,7 @@
       <Display />
     </div>
     <div class="column">
-      <SelectedDisplay />
+      <WorkingDisplay />
     </div>
   </div>
 </template>

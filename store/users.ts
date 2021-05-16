@@ -39,21 +39,28 @@ export const actions = actionTree(
   { state, getters, mutations },
   {
     signIn(ctx, [mail, password]: string[]): void {
+      // ログイン永続性はSESSIONなので画面更新でログアウトする
       firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() => {
+          // メールアドレスとパスワードでログイン
           firebase
             .auth()
             .signInWithEmailAndPassword(mail, password)
             .then(() => {
               const currentUser = firebase.auth().currentUser!;
+              // ユーザーのメールアドレスが認証されていれば画面遷移
               if (currentUser.emailVerified === true) {
+                // 一度打ち間違えてログイン成功した場合を考えてLoginMessageを削除
                 ctx.commit('setLoginMessage', '');
+                // ユーザー情報をstateに格納
                 ctx.commit('setUserInfo', currentUser);
+                // メール認証して初回ログイン時にfirestore内での認証データをtrueに変更
                 firebase.firestore().collection('users').doc(mail).update({
                   is_email_verified: true,
                 });
+                // firestoreからログインしたユーザーのタスクを取得。usersのstoreにタスクデータを渡す。
                 firebase
                   .firestore()
                   .collection('users')
@@ -64,19 +71,22 @@ export const actions = actionTree(
                     const todos: firebase.firestore.DocumentData[] = [];
                     snapshot.forEach((doc) => {
                       const todo = doc.data();
-                      todo.display = 'modal';
+                      todo.detail_display = 'modal';
+                      todo.edit_display = 'modal'
                       todos.push(todo);
                     });
                     this.$router.push('/todoswindow');
                     this.app.$accessor.todos.receiveTodos(todos);
                   });
               } else {
+                // メール認証がされていない場合
                 ctx.commit(
                   'setLoginMessage',
                   'メール認証がされていないアカウントです。'
                 );
               }
             })
+            // そもそもログイン自体に失敗した場合
             .catch(() => {
               ctx.commit(
                 'setLoginMessage',
@@ -86,21 +96,27 @@ export const actions = actionTree(
         });
     },
     signUp(ctx, [name, mail, password]: string[]): void {
+      // ログイン永続性はSESSIONなので画面更新でログアウトする
       firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() => {
+          // 入力したメールアドレスとパスワードで会員登録
           firebase
             .auth()
             .createUserWithEmailAndPassword(mail, password)
             .then(() => {
+              // 一度打ち間違えてログイン成功した場合を考えてRegisterMessageを削除
               ctx.commit('setRegisterMessage', '');
               const currentUser = firebase.auth().currentUser!;
+              // 入力した名前をfirebaseのdisplayNameに登録
               currentUser!.updateProfile({
                 displayName: name,
               });
+              // サインアップしたユーザーをstateに格納
               ctx.commit('setUserInfo', currentUser);
               this.$router.push('/message');
+              // firestoreにユーザー情報を登録
               firebase.firestore().collection('users').doc(mail).set({
                 mail_address: mail,
                 user_id: currentUser?.uid,
@@ -108,6 +124,7 @@ export const actions = actionTree(
                 admin: false,
                 is_email_verified: false,
               });
+              // メールアドレスの認証メールを送信する
               currentUser!.sendEmailVerification();
             })
             .catch(() => {
