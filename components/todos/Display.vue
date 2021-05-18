@@ -98,7 +98,7 @@
             <div class="modal-content">
               <div class="box">
                 <div class="message is-primary">
-                  <div class="message-header">
+                  <div class="message-header is-size-5">
                     <p>{{ todo.todo_name }}</p>
                   </div>
                   <div class="message-body">

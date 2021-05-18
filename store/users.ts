@@ -72,8 +72,11 @@ export const actions = actionTree(
                     snapshot.forEach((doc) => {
                       const todo = doc.data();
                       todo.detail_display = 'modal';
-                      todo.edit_display = 'modal'
+                      todo.edit_display = 'modal';
                       todos.push(todo);
+                    });
+                    todos.sort((a, b) => {
+                      return a.todo_id - b.todo_id;
                     });
                     this.$router.push('/todoswindow');
                     this.app.$accessor.todos.receiveTodos(todos);
