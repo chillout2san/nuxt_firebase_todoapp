@@ -169,6 +169,9 @@ export const actions = actionTree(
                           todo.edit_display = 'modal';
                           todos.push(todo);
                         }
+                        todos.sort((a, b) => {
+                          return a.todo_id - b.todo_id;
+                        });
                       });
                       ctx.commit('setTodosInfo', todos);
                     });
@@ -210,6 +213,9 @@ export const actions = actionTree(
                           todo.edit_display = 'modal';
                           todos.push(todo);
                         }
+                        todos.sort((a, b) => {
+                          return a.todo_id - b.todo_id;
+                        });
                       });
                       ctx.commit('setTodosInfo', todos);
                     });
