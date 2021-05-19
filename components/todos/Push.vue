@@ -67,7 +67,6 @@
           <input
             type="radio"
             name="answer"
-            checked
             @click="change_alert_function('有効')"
           />
           有効
@@ -118,7 +117,7 @@ export default Vue.extend({
       deadlineYear: '',
       deadlineMonth: '',
       deadlineDay: '',
-      alert_function: '有効',
+      alert_function: '',
     };
   },
   computed: {

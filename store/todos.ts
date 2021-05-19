@@ -118,16 +118,26 @@ export const actions = actionTree(
                         todo.detail_display = 'modal';
                         todo.edit_display = 'modal';
                         todos.push(todo);
-                        const index = todos.indexOf(todo) + 1;
+                        let index;
+                        if (todo.todo_id > deleteId) {
+                          index = todo.todo_id - 1;
+                        } else {
+                          index = todo.todo_id;
+                        }
                         doc.ref
                           .update({
                             todo_id: index,
                           })
                           .catch((error) => console.log(error));
                       }
-                      todos.forEach((todo) => {
-                        todo.todo_id = todos.indexOf(todo) + 1;
-                      });
+                    });
+                    todos.forEach((todo) => {
+                      if (todo.todo_id > deleteId) {
+                        todo.todo_id -= 1;
+                      }
+                    });
+                    todos.sort((a, b) => {
+                      return a.todo_id - b.todo_id;
                     });
                     ctx.commit('setTodosInfo', todos);
                   });
@@ -239,7 +249,6 @@ export const actions = actionTree(
           .get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
-              console.log(deadLine);
               doc.ref
                 .update({
                   todo_name: name,

@@ -182,7 +182,6 @@
                       <input
                         type="radio"
                         name="answer"
-                        checked
                         @click="change_alert_function('有効')"
                       />
                       有効
@@ -251,7 +250,7 @@ export default Vue.extend({
       todo_name: '',
       todo_info: '',
       todo_status: '',
-      todo_alert_function: '有効',
+      todo_alert_function: '',
     };
   },
   computed: {
@@ -316,6 +315,17 @@ export default Vue.extend({
       this.todo_name = editTodo[0].todo_name;
       this.todo_info = editTodo[0].info;
       this.todo_status = editTodo[0].status;
+      if (editTodo[0].deadline !== '') {
+        const deadline = new Date(editTodo[0].deadline);
+        this.deadlineYear = deadline.getFullYear().toString();
+        this.deadlineMonth = (deadline.getMonth() + 1).toString();
+        this.deadlineDay = deadline.getDate().toString();
+      } else {
+        this.deadlineYear = '';
+        this.deadlineMonth = '';
+        this.deadlineDay = '';
+      }
+      this.todo_alert_function = editTodo[0].alert_function;
       this.$accessor.todos.displayEditModal(id);
     },
     changeStatus(status: string): void {
