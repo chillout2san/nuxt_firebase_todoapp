@@ -15,6 +15,7 @@ export type RootState = ReturnType<typeof state>;
 
 export const getters = getterTree(state, {
   mail_address: (state) => state.mail_address,
+  admin: (state) => state.admin,
   is_email_verified: (state) => state.is_email_verified,
   register_message: (state) => state.register_message,
   login_message: (state) => state.login_message,
@@ -26,6 +27,9 @@ export const mutations = mutationTree(state, {
     state.user_id = currentUser.uid;
     state.user_name = currentUser.displayName;
     state.is_email_verified = currentUser.emailVerified;
+  },
+  setAdminInfo(state, admin: boolean) {
+    state.admin = admin;
   },
   setRegisterMessage(state, message: string) {
     state.register_message = message;
@@ -54,6 +58,21 @@ export const actions = actionTree(
               if (currentUser.emailVerified === true) {
                 // 一度打ち間違えてログイン成功した場合を考えてLoginMessageを削除
                 ctx.commit('setLoginMessage', '');
+                // ユーザーが管理者権限を持っているか
+                let adminBoolean = false;
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(mail)
+                  .get()
+                  .then((doc) => {
+                    if (doc.exists) {
+                      adminBoolean = doc.data()!.admin;
+                    }
+                  })
+                  .then(() => {
+                    ctx.commit('setAdminInfo', adminBoolean);
+                  });
                 // ユーザー情報をstateに格納
                 ctx.commit('setUserInfo', currentUser);
                 // メール認証して初回ログイン時にfirestore内での認証データをtrueに変更

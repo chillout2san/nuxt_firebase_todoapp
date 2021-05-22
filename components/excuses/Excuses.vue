@@ -37,12 +37,21 @@
         <tr>
           <th class="nowrap">ID</th>
           <th class="nowrap">言い訳</th>
+          <th v-if="$accessor.users.admin" class="nowrap"></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(anexcuse, index) in excusesArray" :key="index">
           <td>{{ anexcuse.excuse_id }}</td>
           <td>{{ anexcuse.excuse }}</td>
+          <td>
+            <button
+              v-if="$accessor.users.admin"
+              class="button is-light is-small has-text-weight-bold"
+            >
+              削除
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
