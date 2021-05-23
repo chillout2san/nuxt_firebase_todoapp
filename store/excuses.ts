@@ -36,8 +36,8 @@ export const actions = actionTree(
         .firestore()
         .collection('excuses')
         .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
+        .then(async (snapshot) => {
+          await snapshot.forEach((doc) => {
             const excuse = doc.data();
             excusesData.push(excuse);
           });
@@ -72,8 +72,8 @@ export const actions = actionTree(
                 .firestore()
                 .collection('excuses')
                 .get()
-                .then((snapshot) => {
-                  snapshot.forEach((doc) => {
+                .then(async (snapshot) => {
+                  await snapshot.forEach((doc) => {
                     const excuse = doc.data();
                     let index;
                     if (excuse.excuse_id > id) {
@@ -85,8 +85,6 @@ export const actions = actionTree(
                       excuse_id: index,
                     });
                   });
-                })
-                .then(() => {
                   ctx.dispatch('setExcuses');
                 });
             });
