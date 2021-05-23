@@ -43,7 +43,7 @@ export const actions = actionTree(
   { state, getters, mutations },
   {
     signIn(ctx, [mail, password]: string[]): void {
-      // ログイン永続性はSESSIONなので画面更新でログアウトする
+      // ログイン永続性はSESSION
       firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -118,7 +118,7 @@ export const actions = actionTree(
         });
     },
     signUp(ctx, [name, mail, password]: string[]): void {
-      // ログイン永続性はSESSIONなので画面更新でログアウトする
+      // ログイン永続性はSESSION
       firebase
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)

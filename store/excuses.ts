@@ -2,12 +2,7 @@ import { getterTree, mutationTree, actionTree } from 'typed-vuex';
 import firebase from '../plugins/firebase';
 
 export const state = () => ({
-  excuses: [
-    {
-      excuse_id: 0,
-      excuse: '上のボタンを押すとみんなの言い訳が見れるよ',
-    },
-  ] as object[],
+  excuses: [] as object[],
 });
 
 export type RootState = ReturnType<typeof state>;

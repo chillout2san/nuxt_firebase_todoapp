@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Tasku',
+    title: 'Ta-Su-Ku',
     htmlAttrs: {
       lang: 'en',
     },
