@@ -1,7 +1,7 @@
 <template>
   <div class="box">
-    <h1 class="pb-2 has-text-weight-bold">言い訳リスト</h1>
     <!-- 言い訳の入力フォームや各種ボタン -->
+    <h1 class="pb-2 has-text-weight-bold">新しい言い訳を追加</h1>
     <div class="field is-grouped">
       <div class="control">
         <input
@@ -23,16 +23,17 @@
         >
           言い訳を心にしまう
         </button>
-        <button
-          class="button is-light is-small has-text-weight-bold"
-          @click.prevent="setExcusesData"
-        >
-          みんなの言い訳を見る
-        </button>
       </div>
     </div>
     <!-- 言い訳内容を表示する -->
-    <table class="table is-hoverable">
+    <h1 class="pb-2 has-text-weight-bold">言い訳リスト</h1>
+    <button
+      class="button is-small has-text-weight-bold"
+      @click.prevent="displayExcuses"
+    >
+      {{ buttonMessage }}
+    </button>
+    <table v-if="$accessor.excuses.excusesDisplay" class="table is-hoverable">
       <thead>
         <tr>
           <th class="nowrap">ID</th>
@@ -48,6 +49,7 @@
             <button
               v-if="$accessor.users.admin"
               class="button is-light is-small has-text-weight-bold"
+              @click.prevent="deleteExcuse(anexcuse.excuse_id)"
             >
               削除
             </button>
@@ -71,14 +73,31 @@ export default Vue.extend({
     excusesArray() {
       return this.$accessor.excuses.excuses;
     },
+    buttonMessage() {
+      if (this.$accessor.excuses.excusesDisplay === true) {
+        return 'みんなの言い訳を閉じる';
+      } else {
+        return 'みんなの言い訳を見る';
+      }
+    },
+  },
+  /* eslint-disable */
+  created: function () {
+    this.$accessor.excuses.setExcuses();
   },
   methods: {
     clearExcuse() {
       this.excuse = '';
     },
-    makeExcuse() {},
-    setExcusesData() {
-      this.$accessor.excuses.setExcuses();
+    makeExcuse() {
+      this.$accessor.excuses.pushExcuse(this.excuse);
+      this.excuse = '';
+    },
+    displayExcuses() {
+      this.$accessor.excuses.toggleExcuseDisplay();
+    },
+    deleteExcuse(id: number) {
+      this.$accessor.excuses.deleteExcuse(id);
     },
   },
 });
