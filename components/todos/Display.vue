@@ -37,7 +37,7 @@
           <td>{{ todo.todo_id }}</td>
           <td>{{ todo.todo_name }}</td>
           <td>{{ todo.status }}</td>
-          <td>{{ todo.deadline }}</td>
+          <td :class="todo.color">{{ todo.deadline }}</td>
           <td>{{ todo.alert_function }}</td>
           <!-- 詳細ボタンを表示する -->
           <td>
@@ -257,7 +257,18 @@ export default Vue.extend({
     selectedTodos(): firebase.firestore.DocumentData[] {
       const selectedStatus = this.status;
       if (selectedStatus === '全て') {
-        return this.$accessor.todos.todos;
+        const allTodos = this.$accessor.todos.todos;
+        allTodos.forEach((todo) => {
+          const deadline = new Date(todo.deadline);
+          const presentTime = new Date();
+          if (
+            deadline.getTime() < presentTime.getTime() &&
+            todo.alert_function === '有効'
+          ) {
+            todo.color = 'has-text-danger has-text-weight-bold';
+          }
+        });
+        return allTodos;
       } else {
         return this.$accessor.todos.todos.filter((todo) => {
           return todo.status === selectedStatus;
