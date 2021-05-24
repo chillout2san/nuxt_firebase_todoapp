@@ -6,10 +6,17 @@
         <strong>T</strong>a-Su-Ku
       </div>
       <button
-        class="button is-primary has-text-weight-bold"
+        class="button is-primary is-small has-text-weight-bold"
         @click="displayAbout"
       >
-        about
+        つかいかた
+      </button>
+      <button
+        v-if="user"
+        class="button is-primary is-small has-text-weight-bold"
+        @click="signOut"
+      >
+        ログアウト
       </button>
     </header>
     <!-- aboutボタン押下時のモーダルウィンドウ -->
@@ -42,7 +49,15 @@ export default Vue.extend({
       display: 'modal',
     };
   },
-  computed: {},
+  computed: {
+    user() {
+      if (this.$accessor.users.mail_address) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
   methods: {
     displayAbout() {
       if (this.display === 'modal') {
@@ -50,6 +65,9 @@ export default Vue.extend({
       } else {
         this.display = 'modal';
       }
+    },
+    signOut() {
+      this.$accessor.users.signOut();
     },
   },
 });

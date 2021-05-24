@@ -28,6 +28,13 @@ export const mutations = mutationTree(state, {
     state.user_name = currentUser.displayName;
     state.is_email_verified = currentUser.emailVerified;
   },
+  clearUserInfo(state) {
+    state.mail_address = '';
+    state.user_id = '';
+    state.user_name = '';
+    state.is_email_verified = false;
+    state.admin = false;
+  },
   setAdminInfo(state, admin: boolean) {
     state.admin = admin;
   },
@@ -155,6 +162,15 @@ export const actions = actionTree(
                 '既に会員登録済でないか、入力内容に誤りがあります。'
               );
             });
+        });
+    },
+    signOut(ctx) {
+      firebase
+        .auth()
+        .signOut()
+        .then(async() => {
+          await ctx.commit('clearUserInfo');
+          this.$router.push('/');
         });
     },
   }
