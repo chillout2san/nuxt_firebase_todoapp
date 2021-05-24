@@ -65,30 +65,50 @@ export const actions = actionTree(
         .collection('excuses')
         .where('excuse_id', '==', id)
         .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            doc.ref.delete().then(() => {
-              firebase
-                .firestore()
-                .collection('excuses')
-                .get()
-                .then(async (snapshot) => {
-                  await snapshot.forEach((doc) => {
-                    const excuse = doc.data();
-                    let index;
-                    if (excuse.excuse_id > id) {
-                      index = excuse.excuse_id - 1;
-                    } else {
-                      index = excuse.excuse_id;
-                    }
-                    doc.ref.update({
-                      excuse_id: index,
+        .then(async (snapshot) => {
+          await snapshot.forEach((doc) => {
+            doc.ref
+              .delete()
+              .then(() => {
+                firebase
+                  .firestore()
+                  .collection('excuses')
+                  .get()
+                  .then(async (snapshot) => {
+                    const excuses: firebase.firestore.DocumentData[] = [];
+                    await snapshot.forEach((doc) => {
+                      if (doc.exists) {
+                        const excuse = doc.data();
+                        excuses.push(excuse);
+                        let index = 0;
+                        if (excuse.excuse_id > id) {
+                          index = excuse.excuse_id - 1;
+                        } else {
+                          index = excuse.excuse_id;
+                        }
+                        doc.ref
+                          .update({
+                            excuse_id: index,
+                          })
+                          .catch((error) => console.log(error));
+                      }
                     });
+                    excuses.forEach((excuse) => {
+                      if (excuse.excuse_id > id) {
+                        excuse.excuse_id -= 1;
+                      }
+                    });
+                    excuses.sort((a, b) => {
+                      return a.excuse_id - b.excuse_id;
+                    });
+                    ctx.commit('setExcusesInfo', excuses);
                   });
-                  ctx.dispatch('setExcuses');
-                });
-            });
+              })
+              .catch((error) => console.log(error));
           });
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   }
