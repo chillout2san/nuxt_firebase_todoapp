@@ -20,7 +20,7 @@
           ログアウト
         </button>
       </div>
-      <p>
+      <p v-if="$accessor.users.is_email_verified">
         <span class="has-text-weight-bold">{{ $accessor.users.user_name }}</span
         >さん、今日もがんばりましょう！
       </p>
