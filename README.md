@@ -1,20 +1,20 @@
-# ToDoApp
+# Ta-Su-Ku
 
-## Build Setup
+### ①概要
 
-```bash
-# install dependencies
-$ npm install
+Ta-Su-Ku とは直感的に利用することができるタスク管理アプリです:grin:
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+### ②使用した技術やフレームワーク等
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+1.Nuxt.js  
+2.TypeScript  
+3.Firebase(Authentication,Cloud Firestore)  
+4.Bulma
 
-# generate static project
-$ npm run generate
-```
+### ③機能要件
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+:point_right:[スプレッドシート](https://docs.google.com/spreadsheets/d/1z0p7qQkM5B6jZoZjLa-lptc6xI5NZHNv7RUzvAxaJIg/edit#gid=0)を参照してください:point_left:
+
+### ④DB 設計図
+
+:point_right:[スプレッドシート](https://docs.google.com/spreadsheets/d/1z0p7qQkM5B6jZoZjLa-lptc6xI5NZHNv7RUzvAxaJIg/edit#gid=1428645283)を参照してください:point_left:
