@@ -88,3 +88,8 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# firebase deploy files
+.firebase
+firestore.rules
+

@@ -74,23 +74,26 @@ export const actions = actionTree(
               .doc(mail)
               .collection('todos')
               .get()
-              .then((snapshot) => {
+              .then(async (snapshot) => {
                 const todos: firebase.firestore.DocumentData[] = [];
-                snapshot.forEach((doc) => {
+                await snapshot.forEach((doc) => {
                   const todo = doc.data();
                   todo.detail_display = 'modal';
                   todo.edit_display = 'modal';
                   todos.push(todo);
+                });
+                todos.sort((a, b) => {
+                  return a.todo_id - b.todo_id;
                 });
                 ctx.commit('setTodosInfo', todos);
               });
           });
       }
     },
+    // 引数で受け取ったtodo_idを持つタスクをfirestoreから削除する
     deleteTodo(ctx, deleteId: number) {
       const mail = this.app.$accessor.users.mail_address;
       if (mail) {
-        // 引数で受け取ったtodo_idを持つタスクをfirestoreから削除する
         firebase
           .firestore()
           .collection('users')
@@ -107,24 +110,34 @@ export const actions = actionTree(
                   .doc(mail)
                   .collection('todos')
                   .get()
-                  .then((snapshot) => {
+                  .then(async (snapshot) => {
                     const todos: firebase.firestore.DocumentData[] = [];
-                    snapshot.forEach((doc) => {
+                    await snapshot.forEach((doc) => {
                       if (doc.exists) {
                         const todo = doc.data();
                         todo.detail_display = 'modal';
                         todo.edit_display = 'modal';
                         todos.push(todo);
-                        const index = todos.indexOf(todo) + 1;
+                        let index;
+                        if (todo.todo_id > deleteId) {
+                          index = todo.todo_id - 1;
+                        } else {
+                          index = todo.todo_id;
+                        }
                         doc.ref
                           .update({
                             todo_id: index,
                           })
                           .catch((error) => console.log(error));
                       }
-                      todos.forEach((todo) => {
-                        todo.todo_id = todos.indexOf(todo) + 1;
-                      });
+                    });
+                    todos.forEach((todo) => {
+                      if (todo.todo_id > deleteId) {
+                        todo.todo_id -= 1;
+                      }
+                    });
+                    todos.sort((a, b) => {
+                      return a.todo_id - b.todo_id;
                     });
                     ctx.commit('setTodosInfo', todos);
                   });
@@ -133,10 +146,10 @@ export const actions = actionTree(
           });
       }
     },
+    // 引数で受け取ったtodo_idを持つタスクを本日のタスクリストに表示
     enableWorkingDisplay(ctx, workingId: number) {
       const mail = this.app.$accessor.users.mail_address;
       if (mail) {
-        // 引数で受け取ったtodo_idを持つタスクを本日のタスクリストに表示
         firebase
           .firestore()
           .collection('users')
@@ -157,15 +170,18 @@ export const actions = actionTree(
                     .doc(mail)
                     .collection('todos')
                     .get()
-                    .then((snapshot) => {
+                    .then(async (snapshot) => {
                       const todos: firebase.firestore.DocumentData[] = [];
-                      snapshot.forEach((doc) => {
+                      await snapshot.forEach((doc) => {
                         if (doc.exists) {
                           const todo = doc.data();
                           todo.detail_display = 'modal';
                           todo.edit_display = 'modal';
                           todos.push(todo);
                         }
+                        todos.sort((a, b) => {
+                          return a.todo_id - b.todo_id;
+                        });
                       });
                       ctx.commit('setTodosInfo', todos);
                     });
@@ -174,10 +190,10 @@ export const actions = actionTree(
           });
       }
     },
+    // 引数で受け取ったtodo_idを持つタスクを本日のタスクリストの表示から外す
     disableWorkingDisplay(ctx, workingId: number) {
       const mail = this.app.$accessor.users.mail_address;
       if (mail) {
-        // 引数で受け取ったtodo_idを持つタスクを本日のタスクリストに表示
         firebase
           .firestore()
           .collection('users')
@@ -198,6 +214,56 @@ export const actions = actionTree(
                     .doc(mail)
                     .collection('todos')
                     .get()
+                    .then(async (snapshot) => {
+                      const todos: firebase.firestore.DocumentData[] = [];
+                      await snapshot.forEach((doc) => {
+                        if (doc.exists) {
+                          const todo = doc.data();
+                          todo.detail_display = 'modal';
+                          todo.edit_display = 'modal';
+                          todos.push(todo);
+                        }
+                        todos.sort((a, b) => {
+                          return a.todo_id - b.todo_id;
+                        });
+                      });
+                      ctx.commit('setTodosInfo', todos);
+                    });
+                });
+            });
+          });
+      }
+    },
+    changeTodo(
+      ctx,
+      [editId, name, todoInfo, todoStatus, deadLine, alertFunction]
+    ) {
+      const mail = this.app.$accessor.users.mail_address;
+      if (mail) {
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(mail)
+          .collection('todos')
+          .where('todo_id', '==', editId)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              doc.ref
+                .update({
+                  todo_name: name,
+                  info: todoInfo,
+                  status: todoStatus,
+                  deadline: deadLine,
+                  alert_function: alertFunction,
+                })
+                .then(() => {
+                  firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(mail)
+                    .collection('todos')
+                    .get()
                     .then((snapshot) => {
                       const todos: firebase.firestore.DocumentData[] = [];
                       snapshot.forEach((doc) => {
@@ -207,6 +273,9 @@ export const actions = actionTree(
                           todo.edit_display = 'modal';
                           todos.push(todo);
                         }
+                        todos.sort((a, b) => {
+                          return a.todo_id - b.todo_id;
+                        });
                       });
                       ctx.commit('setTodosInfo', todos);
                     });

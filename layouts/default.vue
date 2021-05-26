@@ -2,7 +2,7 @@
   <div>
     <Header />
     <Nuxt />
-    <Excuse />
+    <Excuses />
     <Footer />
   </div>
 </template>

@@ -1,13 +1,13 @@
 <template>
   <footer class="box">
     <div>
-      <p>Ta-Su-Ku  is run by 2san!</p>
+      <p class="has-text-weight-bold">Ta-Su-Ku is run by 2san!</p>
     </div>
   </footer>
 </template>
 
 <style scoped>
 .box {
-    text-align: center;
+  text-align: center;
 }
 </style>

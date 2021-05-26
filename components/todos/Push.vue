@@ -67,7 +67,6 @@
           <input
             type="radio"
             name="answer"
-            checked
             @click="change_alert_function('有効')"
           />
           有効
@@ -112,17 +111,29 @@ import Vue from 'vue';
 export default Vue.extend({
   data() {
     return {
-      name: '' as string,
-      info: '' as string,
-      status: '' as string,
-      deadlineYear: '' as string,
-      deadlineMonth: '' as string,
-      deadlineDay: '' as string,
-      deadline: '' as string,
-      alert_function: '有効' as string,
+      name: '',
+      info: '',
+      status: '',
+      deadlineYear: '',
+      deadlineMonth: '',
+      deadlineDay: '',
+      alert_function: '',
     };
   },
   computed: {
+    deadline(): string {
+      if (
+        this.deadlineYear === '' ||
+        this.deadlineMonth === '' ||
+        this.deadlineDay === ''
+      ) {
+        return '';
+      } else {
+        return (
+          this.deadlineYear + '/' + this.deadlineMonth + '/' + this.deadlineDay
+        );
+      }
+    },
     years(): string[] {
       let presentYear = new Date().getFullYear();
       const years = [];
@@ -167,8 +178,6 @@ export default Vue.extend({
       deadline: string,
       alertFunction: string
     ) {
-      deadline =
-        this.deadlineYear + '/' + this.deadlineMonth + '/' + this.deadlineDay;
       this.$accessor.todos.pushTodo([
         name,
         info,
