@@ -1,20 +1,19 @@
-# ToDoApp
+# Ta-Su-Ku
 
-## Build Setup
+## 概要
 
-```bash
-# install dependencies
-$ npm install
+直感的に利用することができるタスク管理アプリです。
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+## 使用技術
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+①Nuxt.js
+②Firebase(Authentication,Cloud Firestore)
+③Bulma
 
-# generate static project
-$ npm run generate
-```
+## 機能要件
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+[スプレッドシート](https://docs.google.com/spreadsheets/d/1z0p7qQkM5B6jZoZjLa-lptc6xI5NZHNv7RUzvAxaJIg/edit#gid=0)を参照してください。
+
+## DB 設計図
+
+[スプレッドシート](https://docs.google.com/spreadsheets/d/1z0p7qQkM5B6jZoZjLa-lptc6xI5NZHNv7RUzvAxaJIg/edit#gid=1428645283)を参照してください。
