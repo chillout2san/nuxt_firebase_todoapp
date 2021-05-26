@@ -36,8 +36,8 @@ export const actions = actionTree(
         .firestore()
         .collection('excuses')
         .get()
-        .then(async (snapshot) => {
-          await snapshot.forEach((doc) => {
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
             const excuse = doc.data();
             excusesData.push(excuse);
           });
@@ -65,8 +65,8 @@ export const actions = actionTree(
         .collection('excuses')
         .where('excuse_id', '==', id)
         .get()
-        .then(async (snapshot) => {
-          await snapshot.forEach((doc) => {
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
             doc.ref
               .delete()
               .then(() => {
@@ -74,9 +74,9 @@ export const actions = actionTree(
                   .firestore()
                   .collection('excuses')
                   .get()
-                  .then(async (snapshot) => {
+                  .then((snapshot) => {
                     const excuses: firebase.firestore.DocumentData[] = [];
-                    await snapshot.forEach((doc) => {
+                    snapshot.forEach((doc) => {
                       if (doc.exists) {
                         const excuse = doc.data();
                         excuses.push(excuse);

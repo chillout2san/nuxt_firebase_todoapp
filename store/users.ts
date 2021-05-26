@@ -4,7 +4,7 @@ import firebase from '../plugins/firebase';
 export const state = () => ({
   mail_address: '' as string | null,
   user_id: '' as string,
-  user_name: 'ゲスト' as string | null,
+  user_name: '' as string | null,
   admin: false as boolean,
   is_email_verified: false as boolean,
   register_message: '',
@@ -32,7 +32,7 @@ export const mutations = mutationTree(state, {
   clearUserInfo(state) {
     state.mail_address = '';
     state.user_id = '';
-    state.user_name = 'ゲスト';
+    state.user_name = '';
     state.is_email_verified = false;
     state.admin = false;
   },
@@ -169,8 +169,8 @@ export const actions = actionTree(
       firebase
         .auth()
         .signOut()
-        .then(async() => {
-          await ctx.commit('clearUserInfo');
+        .then(() => {
+          ctx.commit('clearUserInfo');
           this.$router.push('/');
         });
     },

@@ -74,9 +74,9 @@ export const actions = actionTree(
               .doc(mail)
               .collection('todos')
               .get()
-              .then(async (snapshot) => {
+              .then((snapshot) => {
                 const todos: firebase.firestore.DocumentData[] = [];
-                await snapshot.forEach((doc) => {
+                snapshot.forEach((doc) => {
                   const todo = doc.data();
                   todo.detail_display = 'modal';
                   todo.edit_display = 'modal';
@@ -110,9 +110,9 @@ export const actions = actionTree(
                   .doc(mail)
                   .collection('todos')
                   .get()
-                  .then(async (snapshot) => {
+                  .then((snapshot) => {
                     const todos: firebase.firestore.DocumentData[] = [];
-                    await snapshot.forEach((doc) => {
+                    snapshot.forEach((doc) => {
                       if (doc.exists) {
                         const todo = doc.data();
                         todo.detail_display = 'modal';
@@ -170,9 +170,9 @@ export const actions = actionTree(
                     .doc(mail)
                     .collection('todos')
                     .get()
-                    .then(async (snapshot) => {
+                    .then((snapshot) => {
                       const todos: firebase.firestore.DocumentData[] = [];
-                      await snapshot.forEach((doc) => {
+                      snapshot.forEach((doc) => {
                         if (doc.exists) {
                           const todo = doc.data();
                           todo.detail_display = 'modal';
@@ -214,9 +214,9 @@ export const actions = actionTree(
                     .doc(mail)
                     .collection('todos')
                     .get()
-                    .then(async (snapshot) => {
+                    .then((snapshot) => {
                       const todos: firebase.firestore.DocumentData[] = [];
-                      await snapshot.forEach((doc) => {
+                      snapshot.forEach((doc) => {
                         if (doc.exists) {
                           const todo = doc.data();
                           todo.detail_display = 'modal';
