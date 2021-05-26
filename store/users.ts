@@ -4,7 +4,7 @@ import firebase from '../plugins/firebase';
 export const state = () => ({
   mail_address: '' as string | null,
   user_id: '' as string,
-  user_name: '' as string | null,
+  user_name: 'ゲスト' as string | null,
   admin: false as boolean,
   is_email_verified: false as boolean,
   register_message: '',
@@ -15,6 +15,7 @@ export type RootState = ReturnType<typeof state>;
 
 export const getters = getterTree(state, {
   mail_address: (state) => state.mail_address,
+  user_name: (state) => state.user_name,
   admin: (state) => state.admin,
   is_email_verified: (state) => state.is_email_verified,
   register_message: (state) => state.register_message,
@@ -31,7 +32,7 @@ export const mutations = mutationTree(state, {
   clearUserInfo(state) {
     state.mail_address = '';
     state.user_id = '';
-    state.user_name = '';
+    state.user_name = 'ゲスト';
     state.is_email_verified = false;
     state.admin = false;
   },
