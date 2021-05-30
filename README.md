@@ -18,3 +18,7 @@ Ta-Su-Ku とは直感的に利用することができるタスク管理アプ�
 ### ④DB 設計図
 
 :point_right:[スプレッドシート](https://docs.google.com/spreadsheets/d/1z0p7qQkM5B6jZoZjLa-lptc6xI5NZHNv7RUzvAxaJIg/edit#gid=1428645283)を参照してください:point_left:
+
+### ⑤公式履歴
+
+Ver1.0 リリース
