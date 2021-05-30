@@ -32,7 +32,7 @@
         <div class="box">
           <div class="message is-primary">
             <div class="message-header is-size-5">
-              <p>Ta-Su-Kuについて</p>
+              <p>Ta-Su-Kuについて(Ver 1.0)</p>
             </div>
             <div class="message-body">
               <div class="box">
