@@ -32,7 +32,7 @@
         <div class="box">
           <div class="message is-primary">
             <div class="message-header is-size-5">
-              <p>Ta-Su-Kuについて(Ver 1.0)</p>
+              <p>Ta-Su-Kuについて(Ver 1.1)</p>
             </div>
             <div class="message-body">
               <div class="box">
@@ -138,7 +138,7 @@ export default Vue.extend({
   },
   computed: {
     user() {
-      if (this.$accessor.users.mail_address) {
+      if (this.$accessor.users.is_email_verified) {
         return true;
       } else {
         return false;
